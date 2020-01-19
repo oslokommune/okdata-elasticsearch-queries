@@ -1,5 +1,5 @@
 frameworkVersion: ">=1.50.0 <2.0.0"
-service: lambda-boilerplate
+service: elasticsearch-queries
 provider:
   name: aws
   runtime: python3.7
@@ -11,7 +11,7 @@ provider:
     serverSideEncryption: AES256
   deploymentPrefix: deploy
   iamManagedPolicies:
-    - 'arn:aws:iam::#{AWS::AccountId}:policy/lambda-boilerplate-policy'
+    - 'arn:aws:iam::#{AWS::AccountId}:policy/elasticsearch-queries-policy'
     - 'arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess'
   tags:
     GIT_REV: ${git:branch}:${git:sha1}
@@ -20,18 +20,26 @@ provider:
     GIT_REV: ${git:branch}:${git:sha1}
     STAGE: ${self:provider.stage}
     VERSION: ${self:custom.version}
+    ES_ENDPOINT: ***REMOVED***
+    ES_REGION: eu-west-1
+    AUTHORIZER_API: ${ssm:/dataplatform/simple-dataset-authorizer/url}
+    ENABLE_AUTH: true
+    KEYCLOAK_SERVER: ${ssm:/keycloak/client/server}
+    KEYCLOAK_REALM: api-catalog
+    CLIENT_ID: ${ssm:/dataplatform/apis/elasticsearchsearch/auth/client_id}
+    CLIENT_SECRET: ${ssm:/dataplatform/apis/elasticsearchsearch/auth/client_secret~true}
 package:
   exclude:
     - '**/*'
   include:
-    - boilerplate/*.py
+    - queries/*.py
+    - aws/*.py
 
 
 functions:
-  get_boilerplate: ${file(serverless/functions/get_boilerplate.yaml)}
+  event_stat: ${file(serverless/functions/event_stat.yaml)}
 
 plugins:
-  - serverless-python-requirements
   - serverless-plugin-git-variables
   - serverless-pseudo-parameters
   - serverless-es-logs
@@ -43,10 +51,6 @@ resources:
 
 custom:
   version: 0.1.0
-  pythonRequirements:
-    dockerizePip: non-linux
-    slim: true
-    usePoetry: false
   esLogs:
     endpoint: ${ssm:/dataplatform/elasticsearch/endpoint}
     index: dataplatform-services

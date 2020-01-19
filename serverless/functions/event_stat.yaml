@@ -1,0 +1,10 @@
+handler: queries.events.event_stat
+layers:
+  - ${ssm:/dataplatform/python-base-lambda-layer/arn}
+events:
+  - http:
+      path: "{datasetId}/events"
+      method: get
+      parameters:
+        paths:
+          datasetId: true
