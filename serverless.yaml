@@ -26,8 +26,8 @@ provider:
     ENABLE_AUTH: true
     KEYCLOAK_SERVER: ${ssm:/keycloak/client/server}
     KEYCLOAK_REALM: api-catalog
-    CLIENT_ID: ${ssm:/dataplatform/apis/elasticsearchsearch/auth/client_id}
-    CLIENT_SECRET: ${ssm:/dataplatform/apis/elasticsearchsearch/auth/client_secret~true}
+    CLIENT_ID: ${ssm:/dataplatform/apis/elasticsearch-queries/auth/client_id}
+    CLIENT_SECRET: ${ssm:/dataplatform/apis/elasticsearch-queries/auth/client_secret~true}
 package:
   exclude:
     - '**/*'
