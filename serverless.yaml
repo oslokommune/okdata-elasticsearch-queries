@@ -53,7 +53,7 @@ resources:
 custom:
   version: 0.1.0
   esLogs:
-    endpoint: ${ssm:/dataplatform/elasticsearch/endpoint}
+    endpoint: ${ssm:/dataplatform/shared/logs-elasticsearch-endpoint}
     index: dataplatform-services
     filterPattern: '{ $.function_name = "*" }'
   exportGitVariables: false
