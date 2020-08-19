@@ -25,7 +25,7 @@ provider:
     ES_REGION: eu-west-1
     AUTHORIZER_API: ${ssm:/dataplatform/simple-dataset-authorizer/url}
     ENABLE_AUTH: true
-    KEYCLOAK_SERVER: ${ssm:/keycloak/client/server}
+    KEYCLOAK_SERVER: ${ssm:/dataplatform/shared/keycloak-server-url}
     KEYCLOAK_REALM: api-catalog
     CLIENT_ID: elasticsearch-queries
     CLIENT_SECRET: ${ssm:/dataplatform/apis/elasticsearch-queries/auth/client_secret~true}
