@@ -23,7 +23,7 @@ provider:
     VERSION: ${self:custom.version}
     ES_ENDPOINT: ***REMOVED***
     ES_REGION: eu-west-1
-    AUTHORIZER_API: ${ssm:/dataplatform/simple-dataset-authorizer/url}
+    AUTHORIZER_API: ${ssm:/dataplatform/shared/api-gateway-url}/simple-dataset-authorizer
     ENABLE_AUTH: true
     KEYCLOAK_SERVER: ${ssm:/dataplatform/shared/keycloak-server-url}
     KEYCLOAK_REALM: api-catalog
