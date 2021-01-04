@@ -5,6 +5,7 @@ events:
   - http:
       path: "{datasetId}/events"
       method: get
-      parameters:
-        paths:
-          datasetId: true
+      request:
+        parameters:
+          paths:
+            datasetId: true
