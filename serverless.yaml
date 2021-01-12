@@ -41,6 +41,7 @@ functions:
   event_stat: ${file(serverless/functions/event_stat.yaml)}
 
 plugins:
+  - serverless-python-requirements
   - serverless-plugin-git-variables
   - serverless-pseudo-parameters
   - serverless-es-logs
@@ -52,6 +53,9 @@ resources:
 
 custom:
   version: 0.1.0
+  pythonRequirements:
+    dockerizePip: non-linux
+    usePoetry: false
   esLogs:
     endpoint: ${ssm:/dataplatform/shared/logs-elasticsearch-endpoint}
     index: dataplatform-services

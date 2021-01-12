@@ -1,6 +1,4 @@
 handler: queries.events.event_stat
-layers:
-  - ${ssm:/dataplatform/shared/python-base-layer-arn}
 events:
   - http:
       path: "{datasetId}/events"
