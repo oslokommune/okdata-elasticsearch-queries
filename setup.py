@@ -17,5 +17,5 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.oslo.kommune.no/origo-dataplatform/elasticsearch-queries",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=["boto3", "aws-xray-sdk", "requests", "okdata-aws"],
 )

@@ -4,12 +4,13 @@ import requests
 
 from botocore.session import Session
 from aws_xray_sdk.core import patch_all, xray_recorder
-from dataplatform.awslambda.logging import logging_wrapper, log_add, log_exception
-from auth import SimpleAuth
+from okdata.aws.logging import logging_wrapper, log_add, log_exception
 
 from aws.sign import AwsSignV4
 
 patch_all()
+
+AUTHORIZER_API = os.environ["AUTHORIZER_API"]
 
 ES_ENDPOINT = os.environ["ES_ENDPOINT"]
 ES_REGION = os.environ["ES_REGION"]
@@ -37,6 +38,16 @@ def _format(bucket):
     }
 
 
+def _is_dataset_owner(token, dataset_id):
+    result = requests.get(
+        f"{AUTHORIZER_API}/{dataset_id}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    result.raise_for_status()
+    data = result.json()
+    return data.get("access", False)
+
+
 @logging_wrapper("elasticsearch-queries")
 @xray_recorder.capture("event_stat")
 def event_stat(event, context):
@@ -45,7 +56,8 @@ def event_stat(event, context):
     dataset_id = event["pathParameters"]["datasetId"]
     log_add(dataset_id=dataset_id)
 
-    is_owner = SimpleAuth().is_owner(event, dataset_id)
+    bearer_token = event["headers"]["Authorization"].split(" ")[-1]
+    is_owner = _is_dataset_owner(bearer_token, dataset_id)
     log_add(is_owner=is_owner)
 
     if not is_owner:
