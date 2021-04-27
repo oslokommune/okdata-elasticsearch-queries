@@ -6,11 +6,11 @@
 #
 attrs==20.3.0
     # via jsonschema
-aws-xray-sdk==2.6.0
+aws-xray-sdk==2.7.0
     # via elasticsearch-queries (setup.py)
-boto3==1.16.52
+boto3==1.17.57
     # via elasticsearch-queries (setup.py)
-botocore==1.19.52
+botocore==1.20.57
     # via
     #   aws-xray-sdk
     #   boto3
@@ -29,23 +29,23 @@ jmespath==0.10.0
     # via
     #   boto3
     #   botocore
-jsonpickle==1.4.2
-    # via aws-xray-sdk
 jsonschema==3.2.0
     # via okdata-sdk
-okdata-aws==0.3.0
+okdata-aws==0.3.2
     # via elasticsearch-queries (setup.py)
-okdata-sdk==0.5.2
+okdata-resource-auth==0.1.0
+    # via elasticsearch-queries (setup.py)
+okdata-sdk==0.7.0
     # via okdata-aws
-prettytable==2.0.0
+prettytable==2.1.0
     # via okdata-sdk
 pyasn1==0.4.8
     # via
     #   python-jose
     #   rsa
-pydantic==1.7.3
+pydantic==1.8.1
     # via okdata-aws
-pyjwt==2.0.0
+pyjwt==2.0.1
     # via okdata-sdk
 pyrsistent==0.17.3
     # via jsonschema
@@ -58,11 +58,12 @@ python-keycloak==0.24.0
 requests==2.25.1
     # via
     #   elasticsearch-queries (setup.py)
+    #   okdata-resource-auth
     #   okdata-sdk
     #   python-keycloak
-rsa==4.7
+rsa==4.7.2
     # via python-jose
-s3transfer==0.3.4
+s3transfer==0.4.2
     # via boto3
 six==1.15.0
     # via
@@ -70,9 +71,11 @@ six==1.15.0
     #   jsonschema
     #   python-dateutil
     #   python-jose
-structlog==20.2.0
+structlog==21.1.0
     # via okdata-aws
-urllib3==1.26.2
+typing-extensions==3.7.4.3
+    # via pydantic
+urllib3==1.26.4
     # via
     #   botocore
     #   okdata-sdk
