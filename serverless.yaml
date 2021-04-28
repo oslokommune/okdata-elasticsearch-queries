@@ -63,3 +63,6 @@ custom:
   deploymentBucket:
     prod: ok-origo-dataplatform-config-prod
     dev: ok-origo-dataplatform-config-dev
+  keycloakArn:
+    prod: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:keycloak-authorizer-prod-authenticate
+    dev: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:keycloak-authorizer-dev-authenticate
