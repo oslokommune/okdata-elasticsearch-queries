@@ -5,17 +5,17 @@ import requests
 from botocore.session import Session
 from aws_xray_sdk.core import patch_all, xray_recorder
 from okdata.aws.logging import logging_wrapper, log_add, log_exception
+from okdata.resource_auth import ResourceAuthorizer
 
 from aws.sign import AwsSignV4
 
 patch_all()
 
-AUTHORIZER_API = os.environ["AUTHORIZER_API"]
-
 ES_ENDPOINT = os.environ["ES_ENDPOINT"]
 ES_REGION = os.environ["ES_REGION"]
-
 ES_HOST = f"{ES_ENDPOINT}.{ES_REGION}.es.amazonaws.com"
+
+resource_authorizer = ResourceAuthorizer()
 
 
 def _response(status, data):
@@ -38,16 +38,6 @@ def _format(bucket):
     }
 
 
-def _is_dataset_owner(token, dataset_id):
-    result = requests.get(
-        f"{AUTHORIZER_API}/{dataset_id}",
-        headers={"Authorization": f"Bearer {token}"},
-    )
-    result.raise_for_status()
-    data = result.json()
-    return data.get("access", False)
-
-
 @logging_wrapper("elasticsearch-queries")
 @xray_recorder.capture("event_stat")
 def event_stat(event, context):
@@ -57,10 +47,15 @@ def event_stat(event, context):
     log_add(dataset_id=dataset_id)
 
     bearer_token = event["headers"]["Authorization"].split(" ")[-1]
-    is_owner = _is_dataset_owner(bearer_token, dataset_id)
-    log_add(is_owner=is_owner)
 
-    if not is_owner:
+    has_access = resource_authorizer.has_access(
+        bearer_token,
+        scope="okdata:dataset:read",
+        resource_name=f"okdata:dataset:{dataset_id}",
+    )
+    log_add(has_access=has_access)
+
+    if not has_access:
         return _error_response(403, "Forbidden")
 
     credentials = Session().get_credentials().get_frozen_credentials()

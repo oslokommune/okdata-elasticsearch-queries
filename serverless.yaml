@@ -23,10 +23,10 @@ provider:
     VERSION: ${self:custom.version}
     ES_ENDPOINT: ***REMOVED***
     ES_REGION: eu-west-1
-    AUTHORIZER_API: ${ssm:/dataplatform/shared/api-gateway-url}/simple-dataset-authorizer
     ENABLE_AUTH: true
     KEYCLOAK_SERVER: ${ssm:/dataplatform/shared/keycloak-server-url}
     KEYCLOAK_REALM: api-catalog
+    RESOURCE_SERVER_CLIENT_ID: okdata-resource-server
     CLIENT_ID: elasticsearch-queries
     CLIENT_SECRET: ${ssm:/dataplatform/apis/elasticsearch-queries/auth/client_secret~true}
 package:
@@ -35,7 +35,6 @@ package:
   include:
     - queries/*.py
     - aws/*.py
-
 
 functions:
   event_stat: ${file(serverless/functions/event_stat.yaml)}
@@ -64,3 +63,6 @@ custom:
   deploymentBucket:
     prod: ok-origo-dataplatform-config-prod
     dev: ok-origo-dataplatform-config-dev
+  keycloakArn:
+    prod: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:keycloak-authorizer-prod-authenticate
+    dev: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:keycloak-authorizer-dev-authenticate
