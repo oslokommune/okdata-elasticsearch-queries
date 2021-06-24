@@ -13,7 +13,6 @@ patch_all()
 
 ES_ENDPOINT = os.environ["ES_ENDPOINT"]
 ES_REGION = os.environ["ES_REGION"]
-ES_HOST = f"{ES_ENDPOINT}.{ES_REGION}.es.amazonaws.com"
 
 resource_authorizer = ResourceAuthorizer()
 
@@ -41,7 +40,7 @@ def _format(bucket):
 @logging_wrapper("elasticsearch-queries")
 @xray_recorder.capture("event_stat")
 def event_stat(event, context):
-    log_add(es_host=ES_HOST)
+    log_add(es_endpoint=ES_ENDPOINT)
 
     dataset_id = event["pathParameters"]["datasetId"]
     log_add(dataset_id=dataset_id)
@@ -63,13 +62,13 @@ def event_stat(event, context):
         access_key=credentials.access_key,
         secret_key=credentials.secret_key,
         token=credentials.token,
-        host=ES_HOST,
+        host=ES_ENDPOINT,
         region=ES_REGION,
         service="es",
     )
 
     r = requests.get(
-        f"https://{ES_HOST}/_search",
+        f"https://{ES_ENDPOINT}/_search",
         auth=auth,
         json={
             "size": 0,
