@@ -1,13 +1,13 @@
 {
-  "name": "elasticsearch-queries",
+  "name": "okdata-elasticsearch-queries",
   "description": "",
   "version": "0.1.0",
   "dependencies": {},
   "devDependencies": {
-    "serverless": "^2.18.0",
-    "serverless-es-logs": "^3.4.1",
+    "serverless": "^2.48.0",
+    "serverless-es-logs": "^3.4.2",
     "serverless-plugin-git-variables": "^5.1.0",
     "serverless-pseudo-parameters": "^2.5.0",
-    "serverless-python-requirements": "^5.1.0"
+    "serverless-python-requirements": "^5.1.1"
   }
 }
