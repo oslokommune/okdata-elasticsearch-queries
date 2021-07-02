@@ -1,3 +1,4 @@
 Elasticsearch queries
-==================
-Proxy-thingy for elasticsearch queries
+=====================
+
+Proxy-thingy for Elasticsearch queries.
